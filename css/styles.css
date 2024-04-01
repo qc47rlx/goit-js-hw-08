@@ -1,0 +1,21 @@
+* {
+    box-sizing: border-box;
+}
+
+
+ul {
+    list-style-type: none;
+    display: flex;
+    margin-top: 0;
+    margin-bottom: 0;
+    flex-wrap: wrap;
+    gap: 24px;
+
+}
+
+img {
+    display: block;
+    height: auto;
+    width: 360px;
+    object-fit: cover;
+}
