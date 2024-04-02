@@ -66,38 +66,26 @@ const images = [
 
 const galleryEl = document.querySelector("ul.gallery");
 galleryEl.insertAdjacentHTML("beforeend", galleryItemEl(images));
+
 function galleryItemEl(arr) {
   return arr
     .map(
-      ({ preview, original, description }) => `<li class="gallery-item">
+      ({ preview, original, description }) => `
+  <li class="gallery-item">
     <a class="gallery-link" href="${original}">
-      <img
-        class="gallery-image"
-        src="${preview}"
-        data-source="${original}"
-        alt="${description}"
-      />
+    <img class="gallery-image" src="${preview}" data-source="${original}" alt="${description}"/>
     </a>
-  </li>`
-    )
-    .join("");
-}
+  </li>
+  `).join("");
+}  
 
-galleryEl.addEventListener("click", handleGalleryClick);
-function handleGalleryClick(e) {
-  e.preventDefault();
-  if (e.target === e.currentTarget) return;
+galleryEl.addEventListener("click", (e) => {
+  if (e.target.tagName !== "IMG") return; // перевірка кліку не на картку
+  e.preventDefault(); // відміна стандартної дії браузера (в один момент загубив строку, а він все скачує і скачує, скажений :) )
   const currentImage = e.target.closest(".gallery-image");
+  if (!currentImage) return; // перевірка, чи знайдено зображення
   const imageId = currentImage.dataset.source;
   const imageCard = images.find(({ original }) => original === imageId);
-
-  const instance = basicLightbox.create(`<div class="modal-window">
-   
-      <img
-        src="${imageCard.original}"
-        alt="${imageCard.description}"
-      />
-    
-  </div>`);
+  const instance = basicLightbox.create(`<img src="${imageCard.original}" alt="${imageCard.description}"/>`);
   instance.show();
-}
+});
